@@ -1,3 +1,7 @@
 Scheduler::Application.routes.draw do
-  resources :activities
+  resources :activities, only: [:index, :create, :show]
+
+  resources :schedules, only: [:create] do
+    get 'query', :action => :query, :on => :collection
+  end
 end

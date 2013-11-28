@@ -1,1 +1,12 @@
 /vendor/bundle
+*~
+\#*\#
+.\#*
+log/*.log
+db/*.sqlite3
+tmp/
+public/assets/application-*js*
+public/assets/application-*css*
+public/assets/manifest-*
+vendor/
+

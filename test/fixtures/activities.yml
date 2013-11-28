@@ -1,9 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  vendor: MyString
+scuba:
+  name: Scuba
+  vendor: Joe Diver
 
-two:
-  name: MyString
-  vendor: MyString
+surf:
+  name: Surf
+  vendor: Bodhi
+
+sail:
+  name: Sail
+  vendor: Robert Redford

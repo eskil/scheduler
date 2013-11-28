@@ -1,7 +1,10 @@
 module CalendarUtil
   ##
   # Given a date range, return which weekdays are included as a array
-  # of number [0..6].
+  # of number [0..6] equivalent to Date::DAYNAMES (ie. sun...sat)
+  #
+  # Eg. weekday_range('2013-08-17', '2013-08-21') => [0, 1, 2, 3, 6]
+  # 2013-08-17 is a Saturday, 21 is Wednesday, so days (6, 0, 1, 2, 3)
   #
   def self.weekday_range(from_date, to_date)
     start_date = Date.strptime(from_date)

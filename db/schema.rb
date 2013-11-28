@@ -11,20 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131126044401) do
+ActiveRecord::Schema.define(version: 20131127235543) do
 
   create_table "activities", force: true do |t|
     t.string   "name"
     t.string   "vendor"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "on_mon"
-    t.boolean  "on_tue"
-    t.boolean  "on_wed"
-    t.boolean  "on_thu"
-    t.boolean  "on_fri"
-    t.boolean  "on_sat"
-    t.boolean  "on_sun"
+  end
+
+  create_table "schedules", force: true do |t|
+    t.integer  "activity_id"
+    t.boolean  "recurring",   default: false
+    t.boolean  "on_sun",      default: false
+    t.boolean  "on_mon",      default: false
+    t.boolean  "on_tue",      default: false
+    t.boolean  "on_wed",      default: false
+    t.boolean  "on_thu",      default: false
+    t.boolean  "on_fri",      default: false
+    t.boolean  "on_sat",      default: false
+    t.date     "date_at"
+    t.integer  "time_at"
+    t.integer  "slots"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

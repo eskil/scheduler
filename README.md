@@ -4,11 +4,36 @@ Install HAML
    * gem install haml
 
 
+Examples
+========
+
+Create an activity;
+
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"name": "scuba", "vendor": "joe diver"}' http://localhost:3003/activities
+
+  {"id":5}
+
+
+Create a scheduled dated event;
+
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": "5", "date": "2013-12-24", "time": "17:00", "slots": 8}' http://localhost:3003/schedules
+  {}
+
+Create a scheduled recurring events
+
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": "5", "recurring": "mon, tue, fri", "time": "17:00", "slots": 8}' http://localhost:3003/schedules
+  {}
+
+
+Query;
+
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X GET -d '{"date": "2013-12-24"}' http://localhost:3003/schedules/query
+
 DB
 ==
 
-Days as Booleans
-----------------
+Days as Booleans For Recurring
+------------------------------
 
 Reasons to not use a lookup table;
 
