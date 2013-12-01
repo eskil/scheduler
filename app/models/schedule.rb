@@ -25,7 +25,7 @@ class Schedule < ActiveRecord::Base
   validates :activity, :presence => true
   validates_presence_of :date_at, :unless => :recurring
   validates :time_at, :presence => true
-  validates :slots, :presence => true
+  validates :spots, :presence => true
 
   ##
   # Scopes
@@ -50,4 +50,10 @@ class Schedule < ActiveRecord::Base
     end
     where(:recurring => true).where(conditions.join(" OR "))
   }
+
+
+  def time_at_local
+    Time.at(time_at).utc
+  end
 end
+

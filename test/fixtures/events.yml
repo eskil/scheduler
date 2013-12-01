@@ -1,0 +1,7 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+sail_new_years:
+  activity: sail
+  date_at: 2013-12-31
+  time_at: 17:00
+  spots: 6

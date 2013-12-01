@@ -15,7 +15,7 @@ class CreateSchedules < ActiveRecord::Migration
       t.date :date_at
       t.integer :time_at
 
-      t.integer :slots
+      t.integer :spots
 
       t.timestamps
     end

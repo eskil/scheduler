@@ -21,13 +21,28 @@ Create a scheduled dated event;
 
 Create a scheduled recurring events
 
-  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": "5", "recurring": "mon, tue, fri", "time": "17:00", "slots": 8}' http://localhost:3003/schedules
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": 5, "recurring": "mon, tue, fri", "time": "17:00", "slots": 8}' http://localhost:3003/schedules
   {}
 
 
-Query;
+Query a date;
 
   curl -include -H "Content-type: application/json" --header "Accept: application/json" -X GET -d '{"date": "2013-12-24"}' http://localhost:3003/schedules/query
+
+
+Query a date range;
+
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X GET -d '{"from_date": "2013-12-20", "to_date": "2013-12-26"}' http://localhost:3003/schedules/query
+
+Create a reservation;
+
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": 5, "date": "2013-12-24", "time": "17:00", "slots": 4}' http://localhost:3003/events
+
+  201 = created, ok
+  404 = activity not found
+  403 = forbidden, date/time not available
+  409 = conflict, activity/date/time is ok, but not enough slots, see 'slots'
+
 
 DB
 ==

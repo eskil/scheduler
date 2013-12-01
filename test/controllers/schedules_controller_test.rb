@@ -6,7 +6,7 @@ class SchedulesControllerTest < ActionController::TestCase
     n = activity.schedules.count
 
     post :create, :format => :json, :activity_id => activity.id,
-      :date => "2013-12-24", :time => "13:00", :slots => 8
+      :date => "2013-12-24", :time => "13:00", :spots => 8
 
     assert_response :success
     assert_not_nil assigns(:schedule)
@@ -18,7 +18,7 @@ class SchedulesControllerTest < ActionController::TestCase
     assert_equal false, schedule.recurring
     assert_equal 13.hours.seconds, schedule.time_at
     assert_equal Date.parse("2013-12-24"), schedule.date_at
-    assert_equal 8, schedule.slots
+    assert_equal 8, schedule.spots
   end
 
   test "create recurring" do
@@ -26,7 +26,7 @@ class SchedulesControllerTest < ActionController::TestCase
     n = activity.schedules.count
 
     post :create, :format => :json, :activity_id => activity.id,
-      :recurring => "mon, tue, fri", :time => "13:00", :slots => 8
+      :recurring => "mon, tue, fri", :time => "13:00", :spots => 8
 
     assert_response :success
     assert_not_nil assigns(:schedule)
@@ -37,7 +37,7 @@ class SchedulesControllerTest < ActionController::TestCase
     schedule = activity.schedules.last
     assert_equal true, schedule.recurring
     assert_equal 13.hours.seconds, schedule.time_at
-    assert_equal 8, schedule.slots
+    assert_equal 8, schedule.spots
     assert_equal false, schedule.on_sun
     assert_equal true, schedule.on_mon
     assert_equal true, schedule.on_tue
@@ -50,7 +50,7 @@ class SchedulesControllerTest < ActionController::TestCase
   test "create non existing id failse" do
     assert_raises(ActiveRecord::RecordNotFound) do
       post :create, :format => :json, :activity_id => 'x',
-        :date => "2013-12-24", :time => "13:00", :slots => 8
+        :date => "2013-12-24", :time => "13:00", :spots => 8
     end
   end
 end

@@ -17,7 +17,7 @@ class SchedulesController < ApplicationController
     end
 
     @schedule.time_at = Time.parse(params[:time]).seconds_since_midnight
-    @schedule.slots = params[:slots]
+    @schedule.spots = params[:spots]
     @schedule.save!
 
     respond_to do |format|
