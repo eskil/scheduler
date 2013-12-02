@@ -3,6 +3,16 @@ What
 
 This is an example server for creating, scheduling and booking activities. It's a simple demo project using Rails4 with sqlite3 and an incomplete API.
 
+To run
+
+```
+git clone ...
+rake db:migrate
+rails s
+```
+
+Now point your browser to localhost:3000 and confirm the test set exists. See API for further actions.
+
 API
 ===
 
@@ -19,11 +29,12 @@ Create an activity
 
 example
 
-```
-  curl -include --header "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"name": "scuba", "vendor": "joe diver"}' http://localhost:3003/activities
-  =>
-  201, {"id":1}
-```
+
+    curl -include --header "Content-type: application/json" --header "Accept: application/json" \
+      -X POST -d '{"name": "scuba", "vendor": "joe diver"}' http://localhost:3003/activities
+    =>
+    201, {"id":1}
+
 
 Schedule an activity
 --------------------
@@ -39,11 +50,11 @@ Schedule an activity
 
 example
 
-```
-  curl -include --header "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"date": "2013-12-24", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/activities/1/schedule
-  =>
-  201, {"id":1}
-```
+    curl -include --header "Content-type: application/json" --header "Accept: application/json" \
+      -X POST -d '{"date": "2013-12-24", "time": "17:00", "spots": 8, \
+      "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/activities/1/schedule
+    =>
+    201, {"id":1}
 
 Schedule a recurring activity
 -----------------------------
@@ -59,11 +70,11 @@ Schedule a recurring activity
 
 example
 
-```
-  curl -include --header "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"recurring": "mon fri", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/activities/1/schedule
-  =>
-  201, {"id":2}
-```
+    curl -include --header "Content-type: application/json" --header "Accept: application/json" \
+      -X POST -d '{"recurring": "mon fri", "time": "17:00", "spots": 8, \
+      "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/activities/1/schedule
+    =>
+    201, {"id":2}
 
 Delete a Schedule
 -----------------
@@ -73,11 +84,11 @@ Delete a Schedule
 
 example
 
-```
-  curl -include --header "Content-type: application/json" --header "Accept: application/json" -X DELETE http://localhost:3003/activities/1/schedule/1
-  =>
-  204 on success
-```
+
+    curl -include --header "Content-type: application/json" --header "Accept: application/json" \
+      -X DELETE http://localhost:3003/activities/1/schedule/1
+    =>
+    204 on success
 
 Query a Date
 ------------
@@ -94,13 +105,33 @@ Query a Date
       * time_at: time of availability as HH:MM
       * spots: number of spots available
 
+Note if activity_id is omitted, all activities that have available slots on the given date will be returned.
+
 example
 
-```
-  curl -include --header "Content-type: application/json" --header "Accept: application/json" -X GET -d '{"date": "2013-12-24"}' http://localhost:3003/schedules/query
-  =>
-  200, {"activities":{"2":{"id":2,"name":"surf","vendor":"bodhi"}},"availabilities":{"2013-12-20":[{"activity_id":2,"time_at":61200,"spots":8}],"2013-12-24":[{"activity_id":2,"time_at":61200,"spots":8}],"2013-12-31":[{"activity_id":2,"time_at":61200,"spots":8}]}}
-```
+    curl -include --header "Content-type: application/json" --header "Accept: application/json" \
+      -X GET -d '{"date": "2013-12-24", "activity_id": 2}' http://localhost:3003/schedules/query
+    =>
+    200
+    {
+        "activities": {
+            "2": {
+                "id": 2,
+                "name": "Scuba",
+                "vendor": "Joe Diver"
+            }
+        },
+        "availabilities": {
+            "2013-12-24": [
+                {
+                    "activity_id": 2,
+                    "spots": 2,
+                    "time_at": 28800
+                }
+            ]
+        }
+     }
+
 
 Query a Date Range
 ------------------
@@ -111,14 +142,15 @@ Query a Date Range
     * activity_id: (optional) only query a specific activity
   * Returns 200 on success
     * (same data as querying a date)
+ 
+Note if activity_id is omitted, all activities that have available slots in the given date range will be returned.
 
 example
 
-```
-  curl -include --header "Content-type: application/json" --header "Accept: application/json" -X GET -d '{"from_date": "2013-12-20", "to_date": "2013-12-26"}' http://localhost:3003/schedules/query
-  =>
-  200, json...
-```
+    curl -include --header "Content-type: application/json" --header "Accept: application/json" \
+      -X GET -d '{"from_date": "2013-12-20", "to_date": "2013-12-26"}' http://localhost:3003/schedules/query
+    =>
+    200, json...
 
 Book an Activity
 ----------------
@@ -137,11 +169,10 @@ Book an Activity
 
 example
 
-```
-  curl -include --header "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"date": "2013-12-24", "time": "17:00", "spots": 4}' http://localhost:3003/activities/1/book
-  =>
-  {"id": 1}
-```
+    curl -include --header "Content-type: application/json" --header "Accept: application/json" \
+      -X POST -d '{"date": "2013-12-24", "time": "17:00", "spots": 4}' http://localhost:3003/activities/1/book
+    =>
+    {"id": 1}
 
 Database
 ========
