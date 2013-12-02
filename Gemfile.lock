@@ -53,6 +53,8 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.25.1)
     minitest (4.3.3)
+    money (6.0.0)
+      i18n (~> 0.6.4)
     multi_json (1.8.2)
     mysql2 (0.3.14)
     polyglot (0.3.3)
@@ -115,6 +117,7 @@ DEPENDENCIES
   haml (~> 4.0.4)
   jbuilder (~> 1.2)
   jquery-rails
+  money (~> 6.0)
   mysql2 (~> 0.3.14)
   rails (= 4.0.1)
   sass-rails (~> 4.0.0)

@@ -44,6 +44,7 @@ end
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem 'money', '~> 6.0'
 gem 'haml', '~> 4.0.4'
 gem 'mysql2', '~> 0.3.14'
 

@@ -15,7 +15,8 @@ class SchedulesController < ApplicationController
   def create
     @activity = Activity.find(params[:activity_id])
     @schedule = Schedule.new(:activity => @activity,
-                             :price_cents => params[:price], :price_currency => params[:currency])
+                             :price_cents => params[:price_cents],
+                             :price_currency => params[:price_currency])
     if params[:recurring]
       params[:recurring].split(' ').compact.each.each do |day|
         if Schedule::DAYS.include? day
@@ -33,6 +34,19 @@ class SchedulesController < ApplicationController
     respond_to do |format|
       format.json {
         render :json => @schedule.as_json(:only => [:id]), :status => :created
+      }
+    end
+  end
+
+  ##
+  # DELETE /schedules/:id
+  #
+  def destroy
+    @schedule = Schedule.find(params[:id])
+    @schedule.destroy
+    respond_to do |format|
+      format.json {
+        head :no_content
       }
     end
   end

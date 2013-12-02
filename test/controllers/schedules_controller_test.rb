@@ -26,7 +26,7 @@ class SchedulesControllerTest < ActionController::TestCase
     n = activity.schedules.count
 
     post :create, :format => :json, :activity_id => activity.id,
-      :recurring => "mon tue fri", :time => "13:00", :spots => 8
+      :recurring => "mon tue fri", :time => "13:00", :spots => 8,
       :price_cents => 13000, :price_currency => 'USD'
 
     assert_response :success
@@ -50,9 +50,22 @@ class SchedulesControllerTest < ActionController::TestCase
   test "create non existing id failse" do
     assert_raises(ActiveRecord::RecordNotFound) do
       post :create, :format => :json, :activity_id => 'x',
-        :date => "2013-12-24", :time => "13:00", :spots => 8
+        :date => "2013-12-24", :time => "13:00", :spots => 8,
         :price_cents => 13000, :price_currency => 'USD'
     end
+  end
+
+  test "destroy" do
+    activity = activities(:sail)
+    schedule = activity.schedules.first
+    n = activity.schedules.count
+
+    delete :destroy, :format => :json, :id => schedule.id
+    assert_response :success
+
+    activity.reload
+    assert_equal n-1, activity.schedules.count
+    assert_equal false, (activity.schedules.include? schedule)
   end
 
   test "query date" do

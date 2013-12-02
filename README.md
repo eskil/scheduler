@@ -1,9 +1,3 @@
-Install HAML
-============
-
-   * gem install haml
-
-
 Examples
 ========
 
@@ -16,16 +10,15 @@ Create an activity;
 
 Create a scheduled dated event;
 
-  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": "1", "date": "2013-12-24", "time": "17:00", "spots": 8}' http://localhost:3003/schedules
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": "1", "date": "2013-12-24", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/schedules
   =>
   {}
 
 Create a scheduled recurring events
 
-  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": 1, "recurring": "mon, tue, fri", "time": "17:00", "spots": 8}' http://localhost:3003/schedules
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": 1, "recurring": "mon, tue, fri", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/schedules
   =>
   {}
-
 
 Query a date;
 
@@ -46,8 +39,27 @@ Create a reservation;
   409 = conflict, activity/date/time is ok, but not enough spots, see 'spots'
 
 
+Delete scheduled activity
+
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X DELETE http://localhost:3003/schedules/1
+
 DB
 ==
+
+Prices
+------
+
+An activity's price is associated with the scheduled event, this
+allows different dates/times to have different prices. The price
+stored as cents/currency and uses the Money gem.
+
+Scheduled Time
+--------------
+
+The scheduled time is stored as seconds since midnight on the
+date/day. This is timezone agnostic since an event will always happen
+on the local time of event and therefore not relevant to the timezone
+of the client.
 
 Days as Booleans For Recurring
 ------------------------------
