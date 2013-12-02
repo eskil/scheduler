@@ -142,7 +142,7 @@ Query a Date Range
     * activity_id: (optional) only query a specific activity
   * Returns 200 on success
     * (same data as querying a date)
- 
+
 Note if activity_id is omitted, all activities that have available slots in the given date range will be returned.
 
 example
@@ -241,4 +241,10 @@ Reasons for separate bool columns;
      per entry, and the set of weekdays is fixed and will not grow
      (although you could add entries for weekdays/weekend-days).
 
+Tests
+=====
 
+Get test coverage;
+
+    rake test:coverage
+    open coverage/index.html

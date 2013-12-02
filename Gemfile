@@ -48,7 +48,7 @@ gem 'money', '~> 6.0'
 gem 'haml', '~> 4.0.4'
 gem 'mysql2', '~> 0.3.14'
 
-# group :development do
-#   gem 'tconsole'
-#   gem 'simplecov'
-# end
+group :development do
+  gem 'tconsole'
+  gem 'simplecov'
+end
