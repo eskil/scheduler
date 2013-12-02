@@ -8,4 +8,6 @@ Scheduler::Application.routes.draw do
   resources :schedules, only: [] do
     get 'query', :action => :query, :on => :collection
   end
+
+  get '/', to: redirect('/activities')
 end

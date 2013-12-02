@@ -81,7 +81,6 @@ class Schedule < ActiveRecord::Base
       (wday == 2 && on_tue) || (wday == 3 && on_wed) ||
       (wday == 4 && on_thu) || (wday == 5 && on_fri) ||
       (wday == 6 && on_sat)
-
   end
 end
 

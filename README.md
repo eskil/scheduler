@@ -10,13 +10,13 @@ Create an activity;
 
 Create a scheduled dated event;
 
-  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": "1", "date": "2013-12-24", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/activities/1/schedule
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"date": "2013-12-24", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/activities/1/schedule
   =>
   {"id":1}
 
 Create a scheduled recurring events
 
-  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": 1, "recurring": "mon fri", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/activities/1/schedule
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"recurring": "mon fri", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/activities/1/schedule
   =>
   {"id":2}
 
@@ -105,3 +105,23 @@ Reasons for separate bool columns;
    * Even if the storage system does not pack them, it's only 7 bytes
      per entry, and the set of weekdays is fixed and will not grow
      (although you could add entries for weekdays/weekend-days).
+
+
+Test Set
+========
+
+curl -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"name": "scuba", "vendor": "joe diver"}' http://localhost:3003/activities
+
+curl -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"date": "2013-12-24", "time": "08:00", "spots": 2, "price_cents": 6500, "price_currency": "USD"}' http://localhost:3003/activities/1/schedule
+curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"recurring": "mon fri", "time": "08:00", "spots": 2, "price_cents": 6500, "price_currency": "USD"}' http://localhost:3003/activities/1/schedule
+
+curl -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"date": "2013-12-24", "time": "08:00", "spots": 2}' http://localhost:3003/activities/1/book
+curl -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"date": "2013-12-23", "time": "08:00", "spots": 1}' http://localhost:3003/activities/1/book
+
+curl -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"name": "surf", "vendor": "bodhi"}' http://localhost:3003/activities
+
+curl -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"date": "2013-12-23", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/activities/2/schedule
+curl -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"recurring": "tue fri", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/activities/2/schedule
+
+curl -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"date": "2013-12-24", "time": "17:00", "spots": 4}' http://localhost:3003/activities/1/book
+curl -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"date": "2013-12-23", "time": "17:00", "spots": 4}' http://localhost:3003/activities/1/book

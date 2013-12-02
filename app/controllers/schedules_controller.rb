@@ -4,7 +4,13 @@ class SchedulesController < ApplicationController
   ##
   # GET /schedules/query
   #
-  # Query a date or date range and find all available events.
+  # Query a date or date range and find all available events for all
+  # activities or a particular.
+  #
+  # @param date, query a speficic date (ISO8601)
+  # @param from_date, query from this date, (ISO8601)
+  # @param to_date, query to this date, (ISO8601)
+  # @param activity_id, query a particular activity.
   #
   # Querying either requires looking up scheduled events both by date
   # or recurring. Then we have to look for booked events and subtract
@@ -31,6 +37,12 @@ class SchedulesController < ApplicationController
       recurring = Schedule.where_recurring_on_days(weekdays)
       events = Event.all.where("date_at >= ?", from_date)
         .where("date_at <= ?", to_date)
+    end
+
+    if params[:activity_id].present?
+      scheduled = scheduled.where(:activity_id => params[:activity_id])
+      recurring = recurring.where(:activity_id => params[:activity_id])
+      events = events.where(:activity_id => params[:activity_id])
     end
 
     # Get all booked events so we can subtract availability, flip it
