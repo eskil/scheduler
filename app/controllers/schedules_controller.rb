@@ -19,6 +19,9 @@ class SchedulesController < ApplicationController
   # This should do a minimum amount of queries, so you'll see things like
   # caching lists of activity_ids to query them at the end etc.
   #
+  # With a big dataset (activities) and no restrictions, this can lay
+  # waste to a webserver.
+  #
   def query
     # Query for date or range as best possible
     if params[:date].present?
@@ -98,12 +101,7 @@ class SchedulesController < ApplicationController
     end
 
     # ... phew...
-
-    if activity_ids.empty?
-      head :not_found and return
-    end
-
-    activities = Activity.where(:id => activity_ids.to_a)
+    activities = Hash[*Activity.where(:id => activity_ids.to_a).all.map{|a| [a.id, a]}.flatten]
 
     render :json => {:activities => activities, :availabilities => availabilities}
   end

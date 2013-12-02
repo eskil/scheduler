@@ -1,4 +1,6 @@
 %li
+  %tt
+    = schedule.id
   - if schedule.is_recurring?
     = recurs(schedule)
   - else

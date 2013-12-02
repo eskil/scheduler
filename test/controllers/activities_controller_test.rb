@@ -4,10 +4,8 @@ class ActivitiesControllerTest < ActionController::TestCase
   test "index" do
     get :index
     assert_response :success
-  end
 
-  test "show" do
-    get :show, :id => activities(:sail)
+    get :index, :format => :json
     assert_response :success
   end
 
@@ -18,7 +16,7 @@ class ActivitiesControllerTest < ActionController::TestCase
   end
 
   ##
-  # Scheduel events
+  # Schedule events
 
   test "create schedule date" do
     activity = activities(:sail)
@@ -145,16 +143,22 @@ class ActivitiesControllerTest < ActionController::TestCase
       :time => (schedule.time_at_local + 1.hour).strftime("%R"),
       :spots => schedule.spots
     assert_response :forbidden
+    body = JSON.parse(response.body)
+    assert_equal "date/time", body["reason"]
   end
 
   test "book spots not available" do
     activity = activities(:sail)
     schedule = schedules(:sail_new_years)
+    event = events(:sail_new_years)
 
     post :book, :id => activity.id,
       :date => schedule.date_at.strftime("%F"),
       :time => schedule.time_at_local.strftime("%R"),
       :spots => schedule.spots
-    assert_response :conflict
+    assert_response :forbidden
+    body = JSON.parse(response.body)
+    assert_equal "spots", body["reason"]
+    assert_equal (schedule.spots - event.spots), body["spots"]
   end
 end

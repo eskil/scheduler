@@ -1,5 +1,5 @@
 Scheduler::Application.routes.draw do
-  resources :activities, only: [:index, :create, :show] do
+  resources :activities, only: [:index, :create] do
     post 'book', :action => :book, :on => :member
     post 'schedule', :action => :schedule, :on => :member
     delete 'schedule/:schedule_id', :action => :unschedule, :on => :member

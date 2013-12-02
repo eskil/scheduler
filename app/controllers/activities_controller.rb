@@ -3,30 +3,18 @@ class ActivitiesController < ApplicationController
   # GET /activities
   #
   def index
-    @activities = Activity.all
+    @activities = Activity.includes([:schedules, :events])
     respond_to do |format|
-      format.html {
-        render
+      format.json {
+        render :json => @activities.to_json(:include => [:schedules, :events])
       }
-    end
-  end
-
-  def show
-    @activity = Activity.find(params[:id])
-
-    respond_to do |format|
       format.html { render }
     end
   end
 
   def create
     @activity = Activity.create(:name => params[:name], :vendor => params[:vendor])
-
-    respond_to do |format|
-      format.json {
-        render :json => @activity, :status => :created
-      }
-    end
+    render :json => @activity, :status => :created
   end
 
 
@@ -61,11 +49,7 @@ class ActivitiesController < ApplicationController
     @schedule.spots = params[:spots]
     @schedule.save!
 
-    respond_to do |format|
-      format.json {
-        render :json => @schedule.as_json(:only => [:id]), :status => :created
-      }
-    end
+    render :json => @schedule.as_json(:only => [:id]), :status => :created
   end
 
   ##
@@ -77,11 +61,7 @@ class ActivitiesController < ApplicationController
     # @activity = Activity.find(params[:id])
     @schedule = Schedule.find(params[:schedule_id])
     @schedule.destroy
-    respond_to do |format|
-      format.json {
-        head :no_content
-      }
-    end
+    head :no_content
   end
 
   ##
@@ -104,7 +84,7 @@ class ActivitiesController < ApplicationController
       @schedule = Schedule.where_recurring_on_days([date_at.wday])
         .where(:time_at => time_at).first
       if @schedule.nil?
-        render :json => {}, :status => :forbidden and return
+        render :json => {:reason => "date/time"}, :status => :forbidden and return
       end
     end
 
@@ -117,13 +97,14 @@ class ActivitiesController < ApplicationController
       spots_available -= spots_used
     end
     if spots_available - spots_wanted < 0
-      render :json => {:spots => spots_available}, :status => :conflict and return
+      render :json => {:reason => "spots", :spots => spots_available},
+        :status => :forbidden and return
     end
 
     @event = Event.create(:activity => @activity,
                           :date_at => date_at.to_s,
                           :time_at => time_at,
                           :spots => spots_wanted)
-    render :json => @event, :status => :created
+    render :json => {:id => @event.id}, :status => :created
   end
 end

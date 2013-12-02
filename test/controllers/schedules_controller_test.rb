@@ -10,12 +10,12 @@ class SchedulesControllerTest < ActionController::TestCase
     get :query, :format => :json, :date => date
     assert_response :success
     body = JSON.parse(response.body)
-    puts response.body
-    assert_equal 1, body["activities"].count
+
+    assert_equal 2, body["activities"].count
     assert_equal 1, body["availabilities"].keys.count
-    assert_equal 1, body["availabilities"][date].count
-    assert_equal activity.id, body["availabilities"][date].first["activity_id"]
-    assert_equal 2, body["availabilities"][date].first["spots"]
+    assert_equal 2, body["availabilities"][date].count
+    assert_equal activity.id, body["availabilities"][date][0]["activity_id"]
+    assert_equal 2, body["availabilities"][date][0]["spots"]
   end
 
   test "query date range" do
@@ -26,7 +26,7 @@ class SchedulesControllerTest < ActionController::TestCase
     get :query, :format => :json, :from_date => "2013-12-22", :to_date => "2014-01-01"
     assert_response :success
     body = JSON.parse(response.body)
-    puts response.body
+
     assert_equal 2, body["activities"].count
 
     assert_equal 4, body["availabilities"].keys.count
@@ -44,5 +44,25 @@ class SchedulesControllerTest < ActionController::TestCase
     assert_equal 2, body["availabilities"]["2013-12-31"].count
     assert_equal 2, body["availabilities"]["2013-12-31"][0]["spots"]
     assert_equal 2, body["availabilities"]["2013-12-31"][1]["spots"]
+  end
+
+  test "query date range by activity" do
+    sail = activities(:sail)
+    scuba = activities(:scuba)
+
+    # Query the right date gives a hit
+    get :query, :format => :json, :from_date => "2013-12-22", :to_date => "2014-01-01", :activity_id => scuba.id
+    assert_response :success
+    body = JSON.parse(response.body)
+
+    assert_equal 1, body["activities"].count
+
+    assert_equal 2, body["availabilities"].keys.count
+
+    assert_equal 1, body["availabilities"]["2013-12-24"].count
+    assert_equal 2, body["availabilities"]["2013-12-24"][0]["spots"]
+
+    assert_equal 1, body["availabilities"]["2013-12-31"].count
+    assert_equal 2, body["availabilities"]["2013-12-31"][0]["spots"]
   end
 end
