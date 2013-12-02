@@ -23,25 +23,22 @@ class SchedulesController < ApplicationController
   # waste to a webserver.
   #
   def query
-    # Query for date or range as best possible
+    # Query for date or date-range as best possible.
     if params[:date].present?
       date = params[:date]
       from_date = date
       to_date = date
-      weekdays = CalendarUtil::weekday_range(date, date)
       scheduled = Schedule.where("date_at = ?", date)
-      recurring = Schedule.where_recurring_on_days(weekdays)
       events = Event.all.where("date_at = ?", date)
     else
       from_date = params[:from_date]
       to_date = params[:to_date]
-      weekdays = CalendarUtil::weekday_range(from_date, to_date)
       scheduled = Schedule.where("date_at >= ?", from_date).where("date_at <= ?", to_date)
-      recurring = Schedule.where_recurring_on_days(weekdays)
-      events = Event.all.where("date_at >= ?", from_date)
-        .where("date_at <= ?", to_date)
+      events = Event.all.where("date_at >= ?", from_date).where("date_at <= ?", to_date)
     end
 
+    weekdays = CalendarUtil::weekday_range(from_date, to_date)
+    recurring = Schedule.where_recurring_on_days(weekdays)
     if params[:activity_id].present?
       scheduled = scheduled.where(:activity_id => params[:activity_id])
       recurring = recurring.where(:activity_id => params[:activity_id])
@@ -101,7 +98,7 @@ class SchedulesController < ApplicationController
     end
 
     # ... phew...
-    activities = Hash[*Activity.where(:id => activity_ids.to_a).all.map{|a| [a.id, a]}.flatten]
+    activities = Hash[*Activity.where(:id => activity_ids.to_a).to_a.map{|a| [a.id, a]}.flatten]
 
     render :json => {:activities => activities, :availabilities => availabilities}
   end

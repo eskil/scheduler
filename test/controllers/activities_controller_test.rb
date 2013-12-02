@@ -18,7 +18,7 @@ class ActivitiesControllerTest < ActionController::TestCase
   ##
   # Schedule events
 
-  test "create schedule date" do
+  test "schedule date" do
     activity = activities(:sail)
     n = activity.schedules.count
 
@@ -38,7 +38,7 @@ class ActivitiesControllerTest < ActionController::TestCase
     assert_equal 8, schedule.spots
   end
 
-  test "create schedule recurring" do
+  test "schedule recurring" do
     activity = activities(:sail)
     n = activity.schedules.count
 
@@ -64,7 +64,7 @@ class ActivitiesControllerTest < ActionController::TestCase
     assert_equal false, schedule.on_sat
   end
 
-  test "create schedule non existing id fails" do
+  test "schedule non existing id fails" do
     assert_raises(ActiveRecord::RecordNotFound) do
       post :schedule, :format => :json, :id => 'x',
         :date => "2013-12-24", :time => "13:00", :spots => 8,
@@ -72,7 +72,7 @@ class ActivitiesControllerTest < ActionController::TestCase
     end
   end
 
-  test "destroy schedule" do
+  test "schedule destroy" do
     activity = activities(:sail)
     schedule = activity.schedules.first
     n = activity.schedules.count

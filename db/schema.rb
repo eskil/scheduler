@@ -18,6 +18,13 @@ ActiveRecord::Schema.define(version: 20131202051255) do
     t.string   "vendor"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "on_mon"
+    t.boolean  "on_tue"
+    t.boolean  "on_wed"
+    t.boolean  "on_thu"
+    t.boolean  "on_fri"
+    t.boolean  "on_sat"
+    t.boolean  "on_sun"
   end
 
   create_table "events", force: true do |t|
@@ -29,9 +36,9 @@ ActiveRecord::Schema.define(version: 20131202051255) do
     t.datetime "updated_at"
   end
 
-  add_index "events", ["activity_id"], name: "index_events_on_activity_id", using: :btree
-  add_index "events", ["date_at"], name: "index_events_on_date_at", using: :btree
-  add_index "events", ["time_at"], name: "index_events_on_time_at", using: :btree
+  add_index "events", ["activity_id"], name: "index_events_on_activity_id"
+  add_index "events", ["date_at"], name: "index_events_on_date_at"
+  add_index "events", ["time_at"], name: "index_events_on_time_at"
 
   create_table "schedules", force: true do |t|
     t.integer  "activity_id"
@@ -51,14 +58,14 @@ ActiveRecord::Schema.define(version: 20131202051255) do
     t.datetime "updated_at"
   end
 
-  add_index "schedules", ["activity_id"], name: "index_schedules_on_activity_id", using: :btree
-  add_index "schedules", ["date_at"], name: "index_schedules_on_date_at", using: :btree
-  add_index "schedules", ["on_fri"], name: "index_schedules_on_on_fri", using: :btree
-  add_index "schedules", ["on_mon"], name: "index_schedules_on_on_mon", using: :btree
-  add_index "schedules", ["on_sat"], name: "index_schedules_on_on_sat", using: :btree
-  add_index "schedules", ["on_sun"], name: "index_schedules_on_on_sun", using: :btree
-  add_index "schedules", ["on_thu"], name: "index_schedules_on_on_thu", using: :btree
-  add_index "schedules", ["on_tue"], name: "index_schedules_on_on_tue", using: :btree
-  add_index "schedules", ["on_wed"], name: "index_schedules_on_on_wed", using: :btree
+  add_index "schedules", ["activity_id"], name: "index_schedules_on_activity_id"
+  add_index "schedules", ["date_at"], name: "index_schedules_on_date_at"
+  add_index "schedules", ["on_fri"], name: "index_schedules_on_on_fri"
+  add_index "schedules", ["on_mon"], name: "index_schedules_on_on_mon"
+  add_index "schedules", ["on_sat"], name: "index_schedules_on_on_sat"
+  add_index "schedules", ["on_sun"], name: "index_schedules_on_on_sun"
+  add_index "schedules", ["on_thu"], name: "index_schedules_on_on_thu"
+  add_index "schedules", ["on_tue"], name: "index_schedules_on_on_tue"
+  add_index "schedules", ["on_wed"], name: "index_schedules_on_on_wed"
 
 end
