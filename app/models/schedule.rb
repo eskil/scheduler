@@ -27,7 +27,8 @@ class Schedule < ActiveRecord::Base
   validates :time_at, :presence => true
   validates :spots, :presence => true
 
-
+  ##
+  # Plugins
   composed_of :price,
         :class_name => "Money",
         :mapping => [%w(price_cents cents), %w(price_currency currency_as_string)],

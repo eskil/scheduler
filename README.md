@@ -153,8 +153,14 @@ date/day. This is timezone agnostic since an event will always happen
 on the local time of event and therefore not relevant to the timezone
 of the client.
 
-A acitvity scheduled by date takes precedence over events scheduled by
+A activity scheduled by date takes precedence over events scheduled by
 recurrence.
+
+Bookings
+--------
+
+Booking an activity generates an event. An event is not tied to a
+schedule as this isn't relevant at this stage.
 
 Days as Booleans For Recurring
 ------------------------------
