@@ -70,8 +70,18 @@ class Schedule < ActiveRecord::Base
     Time.at(time_at).utc
   end
 
+  # Test if a schedule is a recurring schedule or dated
   def is_recurring?
     on_sun || on_mon || on_tue || on_wed || on_thu || on_fri || on_sat
+  end
+
+  # Test if a recurring schedule recurs on a specific weekday
+  def recurs_on?(wday)
+    return (wday == 0 && on_sun) || (wday == 1  && on_mon) ||
+      (wday == 2 && on_tue) || (wday == 3 && on_wed) ||
+      (wday == 4 && on_thu) || (wday == 5 && on_fri) ||
+      (wday == 6 && on_sat)
+
   end
 end
 

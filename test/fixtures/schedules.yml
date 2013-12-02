@@ -19,3 +19,9 @@ sail_mondays:
   time_at: <%= Time.parse("17:00").seconds_since_midnight %>
   on_mon: 1 # testing uses sqlite which doesn't support boolean
   spots: 6
+
+scuba_tuesdays:
+  activity: scuba
+  time_at: <%= Time.parse("8:00").seconds_since_midnight %>
+  on_tue: 1 # testing uses sqlite which doesn't support boolean
+  spots: 2
