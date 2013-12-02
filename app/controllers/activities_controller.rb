@@ -38,12 +38,16 @@ class ActivitiesController < ApplicationController
     @activity = Activity.find(params[:id])
 
     # Ensure the date/time exists
-    date_at = Date.parse(params[:date]),
+    date_at = Date.parse(params[:date])
     time_at = Time.parse(params[:time]).seconds_since_midnight
     @schedule = Schedule.where(:activity_id => @activity.id,
                                :date_at => date_at, :time_at => time_at).first
     if @schedule.nil?
-      render :json => {}, :status => :forbidden and return
+      @schedule = Schedule.where_recurring_on_days([date_at.wday])
+        .where(:time_at => time_at).first
+      if @schedule.nil?
+        render :json => {}, :status => :forbidden and return
+      end
     end
 
     # Check spots available

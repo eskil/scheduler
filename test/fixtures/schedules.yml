@@ -5,6 +5,8 @@ sail_xmas:
   date_at: 2013-12-24
   time_at: <%= Time.parse("17:00").seconds_since_midnight %>
   spots: 8
+  price_cents: 20000
+  price_currency:
 
 sail_new_years:
   activity: sail
@@ -15,4 +17,5 @@ sail_new_years:
 sail_mondays:
   activity: sail
   time_at: <%= Time.parse("17:00").seconds_since_midnight %>
-  on_mon: true
+  on_mon: 1 # testing uses sqlite which doesn't support boolean
+  spots: 6

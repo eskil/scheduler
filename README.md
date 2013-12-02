@@ -12,13 +12,13 @@ Create a scheduled dated event;
 
   curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": "1", "date": "2013-12-24", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/schedules
   =>
-  {}
+  {"id":1}
 
 Create a scheduled recurring events
 
-  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": 1, "recurring": "mon, tue, fri", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/schedules
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": 1, "recurring": "mon fri", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/schedules
   =>
-  {}
+  {"id":2}
 
 Query a date;
 
@@ -31,13 +31,15 @@ Query a date range;
 
 Create a reservation;
 
-  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": 1, "date": "2013-12-24", "time": "17:00", "spots": 4}' http://localhost:3003/events
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"date": "2013-12-24", "time": "17:00", "spots": 4}' http://localhost:3003/activities/1/book
 
   201 = created, ok
   404 = activity not found
   403 = forbidden, date/time not available
   409 = conflict, activity/date/time is ok, but not enough spots, see 'spots'
 
+
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"date": "2013-12-23", "time": "17:00", "spots": 4}' http://localhost:3003/activities/1/book
 
 Delete scheduled activity
 
@@ -60,6 +62,9 @@ The scheduled time is stored as seconds since midnight on the
 date/day. This is timezone agnostic since an event will always happen
 on the local time of event and therefore not relevant to the timezone
 of the client.
+
+A acitvity scheduled by date takes precedence over events scheduled by
+recurrence.
 
 Days as Booleans For Recurring
 ------------------------------
