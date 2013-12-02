@@ -1,7 +1,10 @@
-%p
-
+%hr
 %b
   = activity.name
 with
 %b
   = activity.vendor
+%ul
+  = render partial: 'schedule', collection: activity.schedules
+%ul
+  = render partial: 'event', collection: activity.events

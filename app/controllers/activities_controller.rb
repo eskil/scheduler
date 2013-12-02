@@ -1,4 +1,7 @@
 class ActivitiesController < ApplicationController
+  ##
+  # GET /activities
+  #
   def index
     @activities = Activity.all
     respond_to do |format|
@@ -22,6 +25,61 @@ class ActivitiesController < ApplicationController
     respond_to do |format|
       format.json {
         render :json => @activity, :status => :created
+      }
+    end
+  end
+
+
+  ##
+  # POST /schedules
+  # @param activity_id, id of activity
+  # @param recurring, list of space seperated days on which event recurs, eg. "mon tue"
+  # @param date, ISO8601 date string
+  # @param time, HH:MM of event
+  # @param spots, number of spots available
+  #
+  # Does not handle overwriting existing schedules.
+  #
+  def schedule
+    # We don't really need the activity, but it would be a good time/place
+    # to check permission access to the activity...
+    @activity = Activity.find(params[:id])
+    @schedule = Schedule.new(:activity => @activity,
+                             :price_cents => params[:price_cents],
+                             :price_currency => params[:price_currency])
+    if params[:recurring]
+      params[:recurring].split(' ').compact.each.each do |day|
+        if Schedule::DAYS.include? day
+          @schedule.send("on_#{day}=", true)
+        end
+      end
+    else
+      @schedule.date_at = Date.parse(params[:date])
+    end
+
+    @schedule.time_at = Time.parse(params[:time]).seconds_since_midnight
+    @schedule.spots = params[:spots]
+    @schedule.save!
+
+    respond_to do |format|
+      format.json {
+        render :json => @schedule.as_json(:only => [:id]), :status => :created
+      }
+    end
+  end
+
+  ##
+  # DELETE /activities/:id/schedule/:schedule_id
+  #
+  def unschedule
+    # We don't really need the ID, but it would be a good time/place
+    # to check permission access to the activity...
+    # @activity = Activity.find(params[:id])
+    @schedule = Schedule.find(params[:schedule_id])
+    @schedule.destroy
+    respond_to do |format|
+      format.json {
+        head :no_content
       }
     end
   end

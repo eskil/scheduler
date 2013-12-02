@@ -10,13 +10,13 @@ Create an activity;
 
 Create a scheduled dated event;
 
-  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": "1", "date": "2013-12-24", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/schedules
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": "1", "date": "2013-12-24", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/activities/1/schedule
   =>
   {"id":1}
 
 Create a scheduled recurring events
 
-  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": 1, "recurring": "mon fri", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/schedules
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": 1, "recurring": "mon fri", "time": "17:00", "spots": 8, "price_cents": 10000, "price_currency": "USD"}' http://localhost:3003/activities/1/schedule
   =>
   {"id":2}
 
@@ -43,7 +43,7 @@ Create a reservation;
 
 Delete scheduled activity
 
-  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X DELETE http://localhost:3003/schedules/1
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X DELETE http://localhost:3003/activities/1/schedule/1
 
 DB
 ==

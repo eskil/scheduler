@@ -1,0 +1,10 @@
+%li
+  - if schedule.is_recurring?
+    = recurs(schedule)
+  - else
+    = schedule.date_at
+    = schedule.time_at_local.strftime("%R")
+  = schedule.spots
+  spots,
+  = schedule.price.format
+  per spot

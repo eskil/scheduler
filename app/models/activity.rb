@@ -3,6 +3,7 @@ class Activity < ActiveRecord::Base
   # Relationships
   #
   has_many :schedules
+  has_many :events
 
   ##
   # Validations

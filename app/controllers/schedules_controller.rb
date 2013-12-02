@@ -1,56 +1,6 @@
 require 'calendar_util'
 
 class SchedulesController < ApplicationController
-
-  ##
-  # POST /schedules
-  # @param activity_id, id of activity
-  # @param recurring, list of space seperated days on which event recurs, eg. "mon tue"
-  # @param date, ISO8601 date string
-  # @param time, HH:MM of event
-  # @param spots, number of spots available
-  #
-  # Does not handle overwriting existing schedules.
-  #
-  def create
-    @activity = Activity.find(params[:activity_id])
-    @schedule = Schedule.new(:activity => @activity,
-                             :price_cents => params[:price_cents],
-                             :price_currency => params[:price_currency])
-    if params[:recurring]
-      params[:recurring].split(' ').compact.each.each do |day|
-        if Schedule::DAYS.include? day
-          @schedule.send("on_#{day}=", true)
-        end
-      end
-    else
-      @schedule.date_at = Date.parse(params[:date])
-    end
-
-    @schedule.time_at = Time.parse(params[:time]).seconds_since_midnight
-    @schedule.spots = params[:spots]
-    @schedule.save!
-
-    respond_to do |format|
-      format.json {
-        render :json => @schedule.as_json(:only => [:id]), :status => :created
-      }
-    end
-  end
-
-  ##
-  # DELETE /schedules/:id
-  #
-  def destroy
-    @schedule = Schedule.find(params[:id])
-    @schedule.destroy
-    respond_to do |format|
-      format.json {
-        head :no_content
-      }
-    end
-  end
-
   def query
     # Query for date or range as best possible
     if params[:date].present?
