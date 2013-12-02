@@ -35,7 +35,6 @@ ActiveRecord::Schema.define(version: 20131130224054) do
 
   create_table "schedules", force: true do |t|
     t.integer  "activity_id"
-    t.boolean  "recurring",   default: false
     t.boolean  "on_sun",      default: false
     t.boolean  "on_mon",      default: false
     t.boolean  "on_tue",      default: false

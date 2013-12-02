@@ -28,6 +28,6 @@ class EventsController < ApplicationController
                           :date_at => date_at.to_s,
                           :time_at => time_at,
                           :spots => spots_wanted)
-    render :json => @event.as_api_json, :status => :created
+    render :json => @event, :status => :created
   end
 end

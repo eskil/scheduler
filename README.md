@@ -10,18 +10,20 @@ Examples
 Create an activity;
 
   curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"name": "scuba", "vendor": "joe diver"}' http://localhost:3003/activities
-
-  {"id":5}
+  =>
+  201, {"id":1}
 
 
 Create a scheduled dated event;
 
-  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": "5", "date": "2013-12-24", "time": "17:00", "slots": 8}' http://localhost:3003/schedules
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": "1", "date": "2013-12-24", "time": "17:00", "spots": 8}' http://localhost:3003/schedules
+  =>
   {}
 
 Create a scheduled recurring events
 
-  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": 5, "recurring": "mon, tue, fri", "time": "17:00", "slots": 8}' http://localhost:3003/schedules
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": 1, "recurring": "mon, tue, fri", "time": "17:00", "spots": 8}' http://localhost:3003/schedules
+  =>
   {}
 
 
@@ -36,12 +38,12 @@ Query a date range;
 
 Create a reservation;
 
-  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": 5, "date": "2013-12-24", "time": "17:00", "slots": 4}' http://localhost:3003/events
+  curl -include -H "Content-type: application/json" --header "Accept: application/json" -X POST -d '{"activity_id": 1, "date": "2013-12-24", "time": "17:00", "spots": 4}' http://localhost:3003/events
 
   201 = created, ok
   404 = activity not found
   403 = forbidden, date/time not available
-  409 = conflict, activity/date/time is ok, but not enough slots, see 'slots'
+  409 = conflict, activity/date/time is ok, but not enough spots, see 'spots'
 
 
 DB

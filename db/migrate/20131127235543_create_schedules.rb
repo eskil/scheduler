@@ -3,7 +3,6 @@ class CreateSchedules < ActiveRecord::Migration
     create_table :schedules do |t|
       t.integer :activity_id
 
-      t.boolean :recurring, :default => false
       t.boolean :on_sun, :default => false
       t.boolean :on_mon, :default => false
       t.boolean :on_tue, :default => false
@@ -15,6 +14,8 @@ class CreateSchedules < ActiveRecord::Migration
       t.date :date_at
       t.integer :time_at
 
+      t.integer :price_cents, :default => 0
+      t.string :price_currency, :default => 'USD'
       t.integer :spots
 
       t.timestamps

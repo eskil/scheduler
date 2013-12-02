@@ -12,7 +12,7 @@ class ActivitiesControllerTest < ActionController::TestCase
   end
 
   test "create" do
-    post :create, :name => "name", :vendor => "vendor"
+    post :create, :format => :json, :name => "name", :vendor => "vendor"
     assert_response :success
     assert_not_nil assigns(:activity)
   end

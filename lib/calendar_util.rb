@@ -12,6 +12,7 @@ module CalendarUtil
     days = end_date.mjd - start_date.mjd
 
     return [] if days < 0
+    return [start_date.wday] if days == 1
     return *(0..6) if days >= 7
 
     end_day = end_date.wday

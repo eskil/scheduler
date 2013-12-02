@@ -11,3 +11,8 @@ sail_new_years:
   date_at: 2013-12-31
   time_at: <%= Time.parse("17:00").seconds_since_midnight %>
   spots: 8
+
+sail_mondays:
+  activity: sail
+  time_at: <%= Time.parse("17:00").seconds_since_midnight %>
+  on_mon: true

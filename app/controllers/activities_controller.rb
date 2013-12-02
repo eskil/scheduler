@@ -2,9 +2,6 @@ class ActivitiesController < ApplicationController
   def index
     @activities = Activity.all
     respond_to do |format|
-      format.json {
-        render :json => {}
-      }
       format.html {
         render
       }
@@ -15,9 +12,6 @@ class ActivitiesController < ApplicationController
     @activity = Activity.find(params[:id])
 
     respond_to do |format|
-      format.json {
-        render :json => @activity.to_json
-      }
       format.html { render }
     end
   end
@@ -27,10 +21,7 @@ class ActivitiesController < ApplicationController
 
     respond_to do |format|
       format.json {
-        render :json => @activity.to_json(:only => [:id])
-      }
-      format.html {
-        render :action => :show
+        render :json => @activity, :status => :created
       }
     end
   end

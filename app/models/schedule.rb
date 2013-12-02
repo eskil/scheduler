@@ -23,7 +23,7 @@ class Schedule < ActiveRecord::Base
   # Validations
   #
   validates :activity, :presence => true
-  validates_presence_of :date_at, :unless => :recurring
+  validates_presence_of :date_at, :unless => :is_recurring?
   validates :time_at, :presence => true
   validates :spots, :presence => true
 
@@ -31,29 +31,40 @@ class Schedule < ActiveRecord::Base
   # Scopes
   #
   scope :where_recurring_on_days, lambda {|days|
+    # This scope allows for querying for recurring events using either a list of weekdays
+    # or (for console use) list of space-seperated weekdays by name.
+    # Eg.
+    #   where_recurring_on_days([0, 1, 2])
+    # or
+    #   where_recurring_on_days("sun mon tue")
     return if days.blank?
     conditions = []
     if days.is_a? String
-      # You can query using "mon, tue", mostly for console purposes.
+      # You can query using "mon tue", mostly for console purposes.
       # But take care to not cause SQL injection in this case.
-      days.split(',').each{|s| s.strip!}.each do |day|
+      # Also make sure to query using '1' for truth to be compatible
+      # with assorted SQL implementations.
+      days.split(' ').compact.each do |day|
         if DAYS.include? day
-          conditions << "on_#{day} = 't'"
+          conditions << "on_#{day} = '1'"
         end
       end
     else
       days.each do |day|
         if day >= 0 && day <= 6
-          conditions << "on_#{DAYS[day]} = 't'"
+          conditions << "on_#{DAYS[day]} = '1'"
         end
       end
     end
-    where(:recurring => true).where(conditions.join(" OR "))
+    where(conditions.join(" OR "))
   }
-
 
   def time_at_local
     Time.at(time_at).utc
+  end
+
+  def is_recurring?
+    on_sun || on_mon || on_tue || on_wed || on_thu || on_fri || on_sat
   end
 end
 

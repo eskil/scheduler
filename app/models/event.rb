@@ -4,12 +4,13 @@ class Event < ActiveRecord::Base
   #
   belongs_to :activity
 
-  ##
-  # Convert into the JSON the API expects.
-  #
-  def as_api_json
-    {:id => self.id, :activity => self.activity.id,
+  def time_at_local
+    Time.at(time_at).utc
+  end
+
+  def as_json(options={})
+    {:id => self.id, :activity => self.activity.as_json,
      :date => self.date_at, :time => self.time_at,
-     :spots => self.spots}.to_json
+     :spots => self.spots}
   end
 end
